@@ -1,6 +1,5 @@
 package com.onlineordering.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -12,6 +11,7 @@ import java.util.List;
 public class Customer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name = "id" ,nullable = false)
     private long id;
 

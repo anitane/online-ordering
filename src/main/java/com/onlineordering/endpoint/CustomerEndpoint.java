@@ -3,12 +3,10 @@ package com.onlineordering.endpoint;
 import com.onlineordering.domain.Customer;
 import com.onlineordering.domain.Orders;
 import com.onlineordering.repository.CustomerRepository;
-import org.apache.catalina.servlets.DefaultServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PostUpdate;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;

@@ -3,11 +3,9 @@ package com.onlineordering.endpoint;
 import com.onlineordering.domain.Orderitem;
 import com.onlineordering.domain.Orders;
 import com.onlineordering.repository.OrdersRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +42,16 @@ public class OrdersEndpoint {
     @PostMapping("")
     public Map<String,Boolean> createOrderForcustomer(@Valid @RequestBody Orders orders){
         Map<String, Boolean> response = new HashMap<>();
+        //get all orders for customer - check if order is still opened
+        List<Orders> ordersList = ordersRepository.findAll().stream().filter(a-> a.getCustomer_order().getId() == orders.getCustomer_order().getId()).collect(Collectors.toList());
+        if (!ordersList.isEmpty()){
+            for (Orders order: ordersList) {
+                if (order.getId() != orders.getId() && order.getStatus() == 0) {
+                    response.put("Order is still pending to be completed - Please add items to existing order:" + order.getId(), Boolean.FALSE);
+                    return response;
+                }
+            }
+        }
         try {
             ordersRepository.save(orders);
             response.put("Success:", Boolean.TRUE);
@@ -60,6 +68,25 @@ public class OrdersEndpoint {
         List<Orderitem> orderitems = order.getOrderitems();
         orderitems.add(orderitem);
         order.setOrderitems(orderitems);
+        if (order!=null) {
+            try {
+                ordersRepository.save(order);
+                response.put("Success:", Boolean.TRUE);
+            } catch (Exception e) {
+                response.put("Success:", Boolean.FALSE);
+            }
+        }else {
+            response.put("Order not found:", Boolean.FALSE);
+        }
+        return response;
+    }
+
+    @PutMapping("update/{id}")
+    public Map<String,Boolean> updateOrderStatus(@PathVariable(value = "id") Long orderId,@Valid @RequestBody Orders orders){
+        //check if order exist
+        Orders order = ordersRepository.findById(orderId).orElse(null);
+        order.setStatus(orders.getStatus());
+        Map<String, Boolean> response = new HashMap<>();
         if (order!=null) {
             try {
                 ordersRepository.save(order);

@@ -1,10 +1,8 @@
 package com.onlineordering.endpoint;
 
-import com.onlineordering.domain.Customer;
 import com.onlineordering.domain.Payment;
 import com.onlineordering.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,7 +10,6 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payment")

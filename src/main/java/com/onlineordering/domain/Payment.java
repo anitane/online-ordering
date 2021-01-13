@@ -1,16 +1,16 @@
 package com.onlineordering.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Date;
+
 
 @Entity
 @Table (name = "payments")
 public class Payment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name = "id" ,nullable = false)
     private long id;
 
