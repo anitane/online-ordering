@@ -34,7 +34,7 @@ public class OrderitemEndpoint {
 
     @GetMapping("/order/{order_id}")
     public List<Orderitem> findAllOrderitemByOrderId(@PathVariable(value = "order_id") Long orderId){
-        List<Orderitem> orderitems = orderitemRepository.findAll().stream().filter(a-> a.getOrders().getId()==orderId).collect(Collectors.toList());
+        List<Orderitem> orderitems = orderitemRepository.findAll().stream().filter(a->a.getOrders().getId()==orderId).collect(Collectors.toList());
         return orderitems;
     }
 

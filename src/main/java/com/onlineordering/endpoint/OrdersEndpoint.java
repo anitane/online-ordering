@@ -1,5 +1,6 @@
 package com.onlineordering.endpoint;
 
+
 import com.onlineordering.domain.Orderitem;
 import com.onlineordering.domain.Orders;
 import com.onlineordering.repository.OrdersRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,10 +67,10 @@ public class OrdersEndpoint {
     public Map<String,Boolean> updateOrderForcustomer(@PathVariable(value = "id") Long orderId,@Valid @RequestBody Orderitem orderitem){
         Orders order = ordersRepository.findById(orderId).orElse(null);
         Map<String, Boolean> response = new HashMap<>();
+        if (order!=null) {
         List<Orderitem> orderitems = order.getOrderitems();
         orderitems.add(orderitem);
         order.setOrderitems(orderitems);
-        if (order!=null) {
             try {
                 ordersRepository.save(order);
                 response.put("Success:", Boolean.TRUE);
@@ -85,9 +87,9 @@ public class OrdersEndpoint {
     public Map<String,Boolean> updateOrderStatus(@PathVariable(value = "id") Long orderId,@Valid @RequestBody Orders orders){
         //check if order exist
         Orders order = ordersRepository.findById(orderId).orElse(null);
-        order.setStatus(orders.getStatus());
         Map<String, Boolean> response = new HashMap<>();
         if (order!=null) {
+        order.setStatus(orders.getStatus());
             try {
                 ordersRepository.save(order);
                 response.put("Success:", Boolean.TRUE);

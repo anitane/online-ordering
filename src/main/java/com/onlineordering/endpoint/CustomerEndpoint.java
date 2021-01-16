@@ -49,11 +49,17 @@ public class CustomerEndpoint {
     @PutMapping("/addorder/{id}")
     public Map<String,Boolean> updateOrderCustomer(@PathVariable(value = "id") Long customerId,@Valid @RequestBody Orders orders){
         Customer customer=customerRepository.findById(customerId).orElse(null);
-        List<Orders> ordersList = customer.getOrders();
-        ordersList.add(orders);
-        customer.setOrders(ordersList);
         Map<String, Boolean> response = new HashMap<>();
         if (customer != null) {
+        List<Orders> ordersList = customer.getOrders();
+        for (Orders order: ordersList) {
+            if (order.getId() != orders.getId() && order.getStatus() == 0) {
+                response.put("Order is still pending to be completed - Please add items to existing order:" + order.getId(), Boolean.FALSE);
+                return response;
+            }
+        }
+        ordersList.add(orders);
+        customer.setOrders(ordersList);
             try {
                 customerRepository.save(customer);
                 response.put("Success:", Boolean.TRUE);

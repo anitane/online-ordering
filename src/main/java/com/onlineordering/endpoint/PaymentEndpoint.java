@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payment")
@@ -24,6 +25,12 @@ public class PaymentEndpoint {
     @GetMapping("")
     public List<Payment> findPayments(){
         List<Payment> payments = paymentRepository.findAll();
+        return payments;
+    }
+
+    @GetMapping("/{id}")
+    public List<Payment> findPaymentbyId(@PathVariable(value = "id") Long customerId){
+        List<Payment> payments = paymentRepository.findAll().stream().filter(a->a.getCustomer().getId()==customerId).collect(Collectors.toList());
         return payments;
     }
 

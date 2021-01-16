@@ -3,6 +3,7 @@ package com.onlineordering.endpoint;
 import com.onlineordering.domain.Item;
 import com.onlineordering.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,4 +53,15 @@ public class ItemEndpoint {
         return itemRepository.findAll();
     }
 
+    @GetMapping("")
+    public List<Item> getAllItem() {
+        return itemRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Item> findItemById(@PathVariable(value = "id") Long itemId){
+        Item item =itemRepository.
+                findById(itemId).orElse(null);
+        return ResponseEntity.ok().body(item);
+    }
 }
