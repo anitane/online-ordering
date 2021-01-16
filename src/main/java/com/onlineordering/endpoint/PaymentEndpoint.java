@@ -57,5 +57,4 @@ public class PaymentEndpoint {
                 response.put("Customer not found", Boolean.FALSE);
         return response;
     }
-
 }
